@@ -1,36 +1,48 @@
 # Magestà Personalizados
 
-Aplicação web de gestão e precificação para produtos personalizados.
+Aplicação web local para organizar produtos personalizados, estimar custos e formar preços de venda.
 
 ## Executar
 ```bash
 npm install
 npm run dev
-```
+``
 
-## Build
+## Gerar build de produção
 ```bash
 npm run build
-```
+``
 
-## Recursos
-- Dashboard com indicadores de custo, faturamento potencial e lucro estimado.
-- Cadastro, edição, exclusão e pesquisa de produtos.
-- Composição de custo por materiais, quantidades e unidades.
-- Custos de mão de obra, máquina/energia e embalagem.
-- Cálculo de preço com taxas, impostos e margem pelo método divisor.
-- Backup e restauração em JSON.
-- Persistência local com LocalStorage.
-- Interface responsiva.
+## Módulos
 
-## Dados
-Os dados ficam no navegador e dispositivo em que foram cadastrados. Não há sincronização entre dispositivos nem backup automático em nuvem. Exporte backups regularmente em Configurações.
+- **Visão geral:** indicadores de catálogo, custo unitário, faturamento potencial e lucro estimado.
+- **Produtos:** cadastro, edição, pesquisa e exclusão; composição por materiais, mão de obra, máquina/energia e embalagem.
+- **Precificação:** cálculo por divisor, considerando taxas de pagamento, impostos e margem sobre o preço de venda.
+- **Calculadora 3D:** custo do filamento por grama, peso utilizado, tempo, energia, depreciação, refugo, mão de obra, embalagem, taxas e margem. Permite transformar a simulação em produto.
+- **Máquinas:** cadastro de preço de aquisição, vida útil em horas, manutenção prevista e potência; estimativa de custo-hora com depreciação e manutenção.
+- **Insumos:** biblioteca com preço de compra, quantidade/rendimento, unidade e controle simples de estoque e estoque mínimo.
+- **Pedidos:** registro por produto e quantidade, cliente opcional e status (pendente, em produção, concluído ou cancelado).
+- **Relatórios:** resumo de valores estimados e exportação do catálogo para CSV.
+- **Configurações:** backup completo em JSON, restauração e limpeza dos dados.
 
-Os produtos de exemplo são ilustrativos e editáveis. Não são cotações de fornecedores nem recomendação de preço de mercado.
+## Cálculo de preço
 
-## Próximas evoluções
-- Cadastro de máquinas com depreciação, manutenção e custo/hora.
-- Biblioteca de insumos ligada aos produtos.
-- Calculadora detalhada de impressão 3D.
-- Relatórios e exportação CSV.
-- Gestão de pedidos e histórico de preços.
+O preço sugerido usa:
+
+`Preço = custo total ÷ (1 − taxa de pagamento − impostos − margem)`
+
+Os percentuais são informados como números percentuais. A soma precisa ser menor que 100%. O lucro apresentado desconta o custo, taxa de pagamento e impostos.
+
+Na calculadora 3D, o refugo é aplicado ao custo de filamento; energia é calculada por potência média × tempo × tarifa do kWh; depreciação é preço da impressora dividido pela vida útil estimada em horas.
+
+## Armazenamento e limitações
+
+- Os dados são salvos no LocalStorage do navegador e dispositivo atual.
+- Não há conta de usuário, servidor, sincronização entre dispositivos ou backup automático na nuvem.
+- Limpar os dados do navegador pode apagar os cadastros. Exporte backups regularmente.
+- Os insumos cadastrados formam uma biblioteca de referência: o custo de cada material no produto ainda é informado no cadastro do produto, não é atualizado automaticamente a partir do estoque.
+- Pedidos guardam uma cópia do preço e custo do produto no momento do registro. Alterar o catálogo depois não recalcula pedidos antigos.
+- O estoque é um controle manual; registrar pedidos não baixa automaticamente os insumos.
+- Custos, tributos, consumo, vida útil e preços dependem dos dados informados. Valide as tarifas, taxas e obrigações fiscais aplicáveis ao seu negócio.
+
+Os produtos de demonstração são exemplos editáveis, não cotações de fornecedores nem recomendações de preço de mercado.
